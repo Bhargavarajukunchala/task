@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 function OrderHistory({ orders }) {
-  const [storedOrders, setStoredOrders] = useState([]); 
   const [allOrders, setAllOrders] = useState([]); 
 
   useEffect(() => {
     const localOrders = JSON.parse(localStorage.getItem('orders')) || [];
-    setStoredOrders(localOrders); 
-
     const savedCurrentOrders = JSON.parse(localStorage.getItem('currentOrders')) || [];
+    
     setAllOrders([...localOrders, ...savedCurrentOrders]);
   }, []); 
 
@@ -16,7 +14,9 @@ function OrderHistory({ orders }) {
     if (orders.length > 0) {
       localStorage.setItem('currentOrders', JSON.stringify(orders));
 
-      const updatedStoredOrders = [...storedOrders, ...orders];
+      const localOrders = JSON.parse(localStorage.getItem('orders')) || [];
+
+      const updatedStoredOrders = [...localOrders, ...orders];
       localStorage.setItem('orders', JSON.stringify(updatedStoredOrders));
 
       setAllOrders(updatedStoredOrders); 
